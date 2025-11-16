@@ -1,0 +1,31 @@
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+
+  // Si no hay sesión, redirige al login
+  if (!session) {
+    redirect("/signIn");
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-3xl text-gray-900 font-bold mb-4">
+            Dashboard
+          </h2>
+
+          <div className="mb-6">
+            <p className="text-gray-700 mb-2">
+              Bienvenido,{" "}
+              <span className="font-semibold">{session.user?.name}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
